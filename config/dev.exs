@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :issue_seeker, IssueSeeker.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("DATABASE_USERNAME") || "postgres",
+  password: System.get_env("DATABASE_PASSWORD") || "postgres",
   database: "issue_seeker_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
