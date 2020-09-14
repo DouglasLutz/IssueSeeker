@@ -7,30 +7,41 @@ defmodule IssueSeekerWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug IssueSeekerWeb.Plugs.Session
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug IssueSeekerWeb.Plugs.Authorize
+  end
+
+  pipeline :admin do
+    plug IssueSeekerWeb.Plugs.Authorize, admin: true
+  end
+
   scope "/", IssueSeekerWeb do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    scope "/" do
+      pipe_through :auth
+
+      get "/profile", UserController, :profile
+    end
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", IssueSeekerWeb do
-  #   pipe_through :api
-  # end
+  scope "/auth", IssueSeekerWeb do
+    pipe_through :browser
 
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
+    get "/github", AuthController, :request
+    get "/github/callback", AuthController, :callback
+    get "/signout", AuthController, :signout
+  end
+
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 

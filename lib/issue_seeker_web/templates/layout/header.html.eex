@@ -1,0 +1,22 @@
+<header>
+  <nav id="navbar" class="navbar has-shadow is-spaced">
+    <div class="container">
+      <div class="navbar-brand">
+        <%= link to: "/", class: "navbar-item" do %>
+          &nbsp;
+          <h1 class="title is-5"><%= site_title() %></h1>
+        <% end %>
+      </div> <!-- /navbarbrand -->
+      <div class="navbar-menu" id="navMain">
+        <div class="navbar-start">
+          <%= link gettext("Home"), to: "/", class: "navbar-item" %>
+        </div>
+        <div class="navbar-end">
+          <div class="field is-grouped">
+            <%= render "account.html", conn: @conn %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
