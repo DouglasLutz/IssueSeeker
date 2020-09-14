@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :issue_seeker, IssueSeeker.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("DATABASE_USERNAME") || "postgres",
+  password: System.get_env("DATABASE_PASSWORD") || "postgres",
   database: "issue_seeker_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
@@ -16,7 +16,10 @@ config :issue_seeker, IssueSeeker.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :issue_seeker, IssueSeekerWeb.Endpoint,
-  http: [port: 4000],
+  http: [
+    port: 4000,
+    protocol_options: [idle_timeout: 5_000_000]
+  ],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
