@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="column">
+    Name: <%= @user.name %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    Email: <%= @user.email %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    Nickname: <%= @user.nickname %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    GitHub Token: <%= @user.token %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    Image url: <%= @user.image %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    Description: <%= @user.description %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    Bio: <%= @user.bio %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    Location: <%= @user.location %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    Administrador: 
+    <%= 
+      if @user.admin do
+        "Sim"
+      else
+        "Não"
+      end
+    %>
+  </div>
+</div>

@@ -3,6 +3,7 @@ defmodule IssueSeekerWeb.UserController do
 
   def profile(conn, _) do
     user = current_user(conn)
-    text(conn, "#{inspect(user)}")
+    # text(conn, "#{inspect(user)}")
+    render(conn, "profile.html",  user: user)
   end
 end
