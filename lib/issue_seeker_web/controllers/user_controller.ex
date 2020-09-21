@@ -1,9 +1,8 @@
 defmodule IssueSeekerWeb.UserController do
   use IssueSeekerWeb, :controller
 
-  def profile(conn, _) do
+  def self(conn, _) do
     user = current_user(conn)
-    # text(conn, "#{inspect(user)}")
-    render(conn, "profile.html",  user: user)
+    render(conn, "show.html",  user: user)
   end
 end

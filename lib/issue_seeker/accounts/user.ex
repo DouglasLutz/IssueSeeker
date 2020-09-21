@@ -16,6 +16,8 @@ defmodule IssueSeeker.Accounts.User do
     field :location, :string
     field :admin, :boolean, default: false
 
+    has_one :profile, IssueSeeker.Profiles.Profile
+
     timestamps()
   end
 

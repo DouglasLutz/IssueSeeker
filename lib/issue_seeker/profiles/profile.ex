@@ -4,14 +4,14 @@ defmodule IssueSeeker.Profiles.Profile do
   use Ecto.Schema
   import Ecto.Changeset
   alias __MODULE__
-  alias IssueSeeker.{Accounts, Profiles}
+  alias IssueSeeker.{Repo, Profiles}
   alias IssueSeeker.Accounts.User
   alias IssueSeeker.Profiles.{Level, Language}
 
   schema "profiles" do
-    belongs_to :user, User
-    belongs_to :level, Level
-    many_to_many :languages, Language, join_through: "profiles_languages"
+    belongs_to :user, User, on_replace: :update
+    belongs_to :level, Level, on_replace: :nilify
+    many_to_many :languages, Language, join_through: "profiles_languages", on_replace: :delete
 
     timestamps()
   end
@@ -19,23 +19,22 @@ defmodule IssueSeeker.Profiles.Profile do
   def changeset(profile \\ %Profile{}, attrs) do
     languages =
       attrs
-      |> Map.get("languages")
-      |> Profiles.filter_languages_by_name()
+      |> Map.get("languages", [])
+      |> Profiles.filter_languages_by_id()
 
     level =
       attrs
-      |> Map.get("level")
+      |> Map.get("level", "")
       |> Profiles.get_level_by_name()
 
-    user =
-      attrs
-      |> Map.get("user_id")
-      |> Accounts.get_user()
-
     profile
+    |> Repo.preload([:user, :level, :languages])
     |> cast(attrs, [])
-    |> put_assoc(:user, user)
-    |> put_assoc(:level, level)
+    |> put_existing_assoc(:user, Map.get(attrs, "user"))
+    |> put_existing_assoc(:level, level)
     |> put_assoc(:languages, languages)
   end
+
+  defp put_existing_assoc(changeset, _name, nil), do: changeset
+  defp put_existing_assoc(changeset, name, value), do: put_assoc(changeset, name, value)
 end

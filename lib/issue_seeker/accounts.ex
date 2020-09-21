@@ -2,11 +2,15 @@ defmodule IssueSeeker.Accounts do
   alias IssueSeeker.{Repo, Accounts.User}
 
   def get_user(id) do
-    Repo.get(User, id)
+    User
+    |> Repo.get(id)
+    |> Repo.preload(:profile)
   end
 
   def get_user_by(params) do
-    Repo.get_by(User, params)
+    User
+    |> Repo.get_by(params)
+    |> Repo.preload(:profile)
   end
 
 

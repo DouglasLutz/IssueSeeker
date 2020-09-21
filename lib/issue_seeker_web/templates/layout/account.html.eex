@@ -5,11 +5,15 @@
     </p>
   <% end %>
   <p class="control">
-    <%= link to: Routes.user_path(@conn, :profile), class: "navbar-item button" do %>
-      <span><%= gettext("Profile") %></span>
+    <%= link to: Routes.user_path(@conn, :self), class: "navbar-item button" do %>
+      <span><%= gettext("User") %></span>
       <span class="icon">
         <i class="fas fa-user-circle"></i>
       </span>
+    <% end %>
+
+    <%= link to: Routes.profile_path(@conn, :show), class: "navbar-item button" do %>
+      <span><%= gettext("Profile") %></span>
     <% end %>
   </p>
   <p class="control">

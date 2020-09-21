@@ -30,7 +30,15 @@ defmodule IssueSeekerWeb.Router do
     scope "/" do
       pipe_through :auth
 
-      get "/profile", UserController, :profile
+      get "/self", UserController, :self
+
+      scope "/profiles" do
+        get "/", ProfileController, :show
+        get "/new", ProfileController, :new
+        get "/edit", ProfileController, :edit
+        post "/", ProfileController, :create
+        put "/", ProfileController, :update
+      end
     end
   end
 

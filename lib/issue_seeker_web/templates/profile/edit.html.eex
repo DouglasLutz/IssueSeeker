@@ -1,0 +1,3 @@
+<h1 class="text-center">Editing your profile <%= current_user(@conn).name %></h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.profile_path(@conn, :update)) %>

@@ -14,5 +14,11 @@ defmodule IssueSeekerWeb.UserHelper do
     conn.assigns[:current_user]
   end
 
+  def current_user_profile(conn) do
+    conn
+    |> current_user()
+    |> IssueSeeker.Profiles.get_user_profile()
+  end
+
   def signed_in?(conn), do: current_user(conn) != nil
 end

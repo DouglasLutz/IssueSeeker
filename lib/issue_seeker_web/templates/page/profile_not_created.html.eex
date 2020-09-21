@@ -1,0 +1,5 @@
+<p> Opsss, looks like your profile has not yet been created.</p>
+
+<%= link to: Routes.profile_path(@conn, :new), class: "btn btn-primary" do %>
+  <span><%= gettext("Create your profile!") %></span>
+<% end %>
