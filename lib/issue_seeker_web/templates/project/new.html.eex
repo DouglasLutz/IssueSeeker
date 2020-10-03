@@ -1,0 +1,15 @@
+<h1 class="h1">Sugest a new Project</h1>
+
+<%= form_for :project, Routes.project_path(@conn, :create), fn f -> %>
+  <div class="form-group">
+    <%= label f, :url %>
+    <%= text_input f, :url, class: "form-control"%>
+    <small id="urlHelp" class="form-text text-muted">Must be a valid github public project.</small>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Send sugestion", class: "btn btn-primary btn-submit form-control" %>
+  </div>
+<% end %>
+
+<span><%= link "Back", to: "/", class: "btn btn-secondary form-control" %></span>

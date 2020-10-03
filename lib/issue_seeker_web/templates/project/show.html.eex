@@ -1,0 +1,48 @@
+<h1><%= @project.name %> information</h1>
+
+<ul class="list-group">
+  <%= link "Name: #{@project.name}", to: get_project_url(@project), target: "_blank", class: "list-group-item list-group-item-action active"%>
+
+  <li class="list-group-item">
+    <strong>Owner:</strong>
+    <%= @project.owner %>
+  </li>
+
+  <li class="list-group-item">
+    <strong>Stargazers count:</strong>
+    <%= @project.stargazers_count %>
+  </li>
+
+  <li class="list-group-item">
+    <strong>Languages:</strong>
+    <ul class="list-group">
+      <%= for language <- @project.languages do %>
+        <li class="list-group-item"><%= language.name %></li>
+      <% end %>
+    </ul>
+  </li>
+
+  <%= if admin_session?(@conn) do %>
+    <li class="list-group-item">
+      <strong>Level:</strong>
+      <%= if @project.level do %>
+        <%= @project.level.name %>
+      <% else %>
+        Unassigned
+      <% end %>
+    </li>
+  <% end %>
+
+  <%= if admin_session?(@conn) do %>
+    <li class="list-group-item">
+      <strong>Status:</strong>
+      <%= @project.status %>
+    </li>
+  <% end %>
+
+</ul>
+
+<%= if admin_session?(@conn) do %>
+  <span><%= link "Edit", to: Routes.project_path(@conn, :edit, @project) %></span>
+<% end %>
+<span><%= link "Back", to: Routes.project_path(@conn, :index) %></span>

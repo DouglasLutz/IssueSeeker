@@ -49,7 +49,8 @@ defmodule IssueSeeker.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:ueberauth_github, "~> 0.7"}
+      {:ueberauth_github, "~> 0.7"},
+      {:httpoison, "~> 1.7"}
     ]
   end
 

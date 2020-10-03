@@ -1,0 +1,17 @@
+<h1>Edit Project</h1>
+
+<%= form_for @changeset, Routes.project_path(@conn, :update, @project), fn f -> %>
+  <div class="form-group">
+    <label for="level">Level of difficulty</label>
+    <%= select f, :level, available_levels(), selected: project_level(@changeset.data), class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="level">Status</label>
+    <%= select f, :status, IssueSeeker.Projects.Project.statuses(), selected: @changeset.data.status, class: "form-control" %>
+  </div>
+
+  <%= submit "Submit", class: "form-control" %>
+<% end %>
+
+<span><%= link "Back", to: Routes.project_path(@conn, :index), class: "btn btn-secondary form-control" %></span>

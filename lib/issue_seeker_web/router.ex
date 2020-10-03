@@ -26,6 +26,12 @@ defmodule IssueSeekerWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    scope "/projects" do
+      get "/new", ProjectController, :new
+      post "/", ProjectController, :create
+      get "/", ProjectController, :index
+      get "/:id", ProjectController, :show
+    end
 
     scope "/" do
       pipe_through :auth
@@ -38,6 +44,14 @@ defmodule IssueSeekerWeb.Router do
         get "/edit", ProfileController, :edit
         post "/", ProfileController, :create
         put "/", ProfileController, :update
+      end
+
+      scope "/projects" do
+        pipe_through :admin
+
+        get "/list/pending_aproval", ProjectController, :pending_aproval
+        get "/edit/:id", ProjectController, :edit
+        put "/:id", ProjectController, :update
       end
     end
   end

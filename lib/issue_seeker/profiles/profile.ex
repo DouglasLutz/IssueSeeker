@@ -2,7 +2,10 @@ defmodule IssueSeeker.Profiles.Profile do
   @moduledoc false
 
   use Ecto.Schema
+
   import Ecto.Changeset
+  import IssueSeeker.Helpers.Changeset
+
   alias __MODULE__
   alias IssueSeeker.{Repo, Profiles}
   alias IssueSeeker.Accounts.User
@@ -34,7 +37,4 @@ defmodule IssueSeeker.Profiles.Profile do
     |> put_existing_assoc(:level, level)
     |> put_assoc(:languages, languages)
   end
-
-  defp put_existing_assoc(changeset, _name, nil), do: changeset
-  defp put_existing_assoc(changeset, name, value), do: put_assoc(changeset, name, value)
 end

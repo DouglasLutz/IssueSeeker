@@ -18,6 +18,9 @@ config :issue_seeker, IssueSeekerWeb.Endpoint,
   pubsub_server: IssueSeeker.PubSub,
   live_view: [signing_salt: "Y4OJtwLm"]
 
+config :issue_seeker, IssueSeeker.Http,
+  github_v3_url: "https://api.github.com"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
