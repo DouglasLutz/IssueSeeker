@@ -2,7 +2,6 @@ defmodule IssueSeekerWeb.ProjectController do
   use IssueSeekerWeb, :controller
 
   alias IssueSeeker.Projects
-  alias IssueSeeker.Projects.Project
 
   def index(conn, _params) do
     projects = Projects.list_active_projects()
@@ -19,7 +18,7 @@ defmodule IssueSeekerWeb.ProjectController do
   end
 
   def create(conn, %{"project" => %{"url" => url}}) do
-    with {:ok, project_params} <- Project.get_attrs_from_url(url),
+    with {:ok, project_params} <- Projects.get_project_attrs_from_url(url),
       {:ok, _project} <- Projects.create_project(project_params) do
         conn
         |> put_flash(:info, "Project sugestion submitted successfully.")

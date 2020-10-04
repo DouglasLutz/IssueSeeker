@@ -52,23 +52,5 @@ defmodule IssueSeeker.Projects.Project do
     |> put_existing_assoc(:level, level)
   end
 
-  def get_attrs_from_url(url) do
-    with {:ok, %{"languages_url" => languages_url, "contributors_url" => contributors_url} = project_attrs} <- IssueSeeker.Projects.Http.Project.get(url),
-      {:ok, languages} <- IssueSeeker.Projects.Http.Language.get(languages_url),
-      {:ok, contributors} <- IssueSeeker.Projects.Http.Contributor.get(contributors_url) do
-        result =
-          project_attrs
-          |> Map.merge(%{
-            "languages" => languages,
-            "contributors" => contributors
-          })
-
-        {:ok, result}
-      else
-        error ->
-          error
-    end
-  end
-
   def statuses, do: ["PENDING_APROVAL", "ACTIVE", "INACTIVE"]
 end

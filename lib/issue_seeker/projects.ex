@@ -71,4 +71,22 @@ defmodule IssueSeeker.Projects do
   def change_project(project, attrs \\ %{}) do
     Project.update_changeset(project, attrs)
   end
+
+  def get_project_attrs_from_url(url) do
+    with {:ok, %{"languages_url" => languages_url, "contributors_url" => contributors_url} = project_attrs} <- IssueSeeker.Http.Project.get(url),
+      {:ok, languages} <- IssueSeeker.Http.Language.get(languages_url),
+      {:ok, contributors} <- IssueSeeker.Http.Contributor.get(contributors_url) do
+        result =
+          project_attrs
+          |> Map.merge(%{
+            "languages" => languages,
+            "contributors" => contributors
+          })
+
+        {:ok, result}
+      else
+        error ->
+          error
+    end
+  end
 end

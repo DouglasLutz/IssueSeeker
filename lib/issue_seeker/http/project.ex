@@ -1,4 +1,4 @@
-defmodule IssueSeeker.Projects.Http.Project do
+defmodule IssueSeeker.Http.Project do
   alias IssueSeeker.Helpers.Regex
 
   defp base_url(), do: Application.get_env(:issue_seeker, IssueSeeker.Http)[:github_v3_url]
