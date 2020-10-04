@@ -13,7 +13,6 @@ defmodule IssueSeeker.Repo.Migrations.AddProfilesTables do
       add :name, :string
     end
     create unique_index(:languages, [:name])
-    execute("INSERT INTO languages (\"name\") VALUES ('HTML'), ('CSS'), ('Javascript'), ('Ruby'), ('Elixir'), ('Go'), ('C#')")
 
     create table(:profiles) do
       add :user_id, references(:users), null: false

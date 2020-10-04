@@ -1,54 +1,47 @@
-<div class="row">
-  <div class="column">
-    Name: <%= @user.name %>
-  </div>
-</div>
+<h1 class="mt-3">User information</h1>
+<ul class="list-group mt-3">
+  <li class="list-group-item">
+    <strong>Name:</strong>
+    <%= @user.name %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    Email: <%= @user.email %>
-  </div>
-</div>
+  <li class="list-group-item">
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    Nickname: <%= @user.nickname %>
-  </div>
-</div>
+  <li class="list-group-item">
+    <strong>Nickname:</strong>
+    <%= @user.nickname %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    GitHub Token: <%= @user.token %>
-  </div>
-</div>
+  <li class="list-group-item">
+    <strong>GitHub Token:</strong>
+    <%= @user.token %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    Image url: <%= @user.image %>
-  </div>
-</div>
+  <li class="list-group-item">
+    <strong>Image url:</strong>
+    <%= @user.image %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    Description: <%= @user.description %>
-  </div>
-</div>
+  <li class="list-group-item">
+    <strong>Description:</strong>
+    <%= @user.description %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    Bio: <%= @user.bio %>
-  </div>
-</div>
+  <li class="list-group-item">
+    <strong>Bio:</strong>
+    <%= @user.bio %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    Location: <%= @user.location %>
-  </div>
-</div>
+  <li class="list-group-item">
+    <strong>Location:</strong>
+    <%= @user.location %>
+  </li>
 
-<div class="row">
-  <div class="column">
-    Administrador: 
+  <li class="list-group-item">
+    <strong>Administrador:</strong>
     <%= 
       if @user.admin do
         "Sim"
@@ -56,5 +49,5 @@
         "Não"
       end
     %>
-  </div>
-</div>
+  </li>
+</ul>
