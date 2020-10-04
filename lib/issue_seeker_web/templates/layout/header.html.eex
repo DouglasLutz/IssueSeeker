@@ -16,6 +16,17 @@
             <%= link gettext("Projects"), to: "/projects", class: "navbar-link" %>
           </li>
 
+          <div class="nav-item active dropdown mr-auto my-2 my-lg-0">
+            <a class="navbar-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Recommendations
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <%= link to: Routes.recommendation_path(@conn, :projects), class: "dropdown-item" do %>
+                <span><%= gettext("Projects for me") %></span>
+              <% end %>
+            </div>
+          </div>
+
         </ul>
         <%= render "navbar_account.html", conn: @conn %>
       </div>

@@ -18,6 +18,10 @@ defmodule IssueSeekerWeb.Router do
     plug IssueSeekerWeb.Plugs.Authorize
   end
 
+  pipeline :with_profile do
+    plug IssueSeekerWeb.Plugs.Authorize, has_profile: true
+  end
+
   pipeline :admin do
     plug IssueSeekerWeb.Plugs.Authorize, admin: true
   end
@@ -45,13 +49,23 @@ defmodule IssueSeekerWeb.Router do
         post "/", ProfileController, :create
         put "/", ProfileController, :update
       end
+    end
+
+    scope "/" do
+      pipe_through :admin
 
       scope "/projects" do
-        pipe_through :admin
-
         get "/list/pending_aproval", ProjectController, :pending_aproval
         get "/edit/:id", ProjectController, :edit
         put "/:id", ProjectController, :update
+      end
+    end
+
+    scope "/" do
+      pipe_through :with_profile
+
+      scope "/recommendations" do
+        get "/projects", RecommendationController, :projects
       end
     end
   end

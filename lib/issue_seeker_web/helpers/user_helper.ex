@@ -8,6 +8,10 @@ defmodule IssueSeekerWeb.UserHelper do
     end
   end
 
+  def signed_in?(conn), do: current_user(conn) != nil
+
+  def has_created_profile?(conn), do: current_user_profile(conn) != nil
+
   def current_user(%{assigns: %Phoenix.LiveView.Socket.AssignsNotInSocket{}}), do: nil
 
   def current_user(conn) do
@@ -19,6 +23,4 @@ defmodule IssueSeekerWeb.UserHelper do
     |> current_user()
     |> IssueSeeker.Profiles.get_user_profile()
   end
-
-  def signed_in?(conn), do: current_user(conn) != nil
 end

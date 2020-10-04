@@ -1,5 +1,4 @@
-<h1><%= @title %></h1>
-<span><%= link "Please make a sugestion here!", to: Routes.project_path(@conn, :new) %></span>
+<h1>Projects matching your profile</h1>
 
 <table class="table">
   <thead>
@@ -20,9 +19,6 @@
 
       <td>
         <span><%= link "Show", to: Routes.project_path(@conn, :show, project) %></span>
-        <%= if admin_session?(@conn) do %>
-          <span><%= link "Edit", to: Routes.project_path(@conn, :edit, project) %></span>
-        <% end %>
       </td>
     </tr>
 <% end %>

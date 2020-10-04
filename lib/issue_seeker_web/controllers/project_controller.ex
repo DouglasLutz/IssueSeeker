@@ -6,12 +6,12 @@ defmodule IssueSeekerWeb.ProjectController do
 
   def index(conn, _params) do
     projects = Projects.list_active_projects()
-    render(conn, "index.html", projects: projects)
+    render(conn, "index.html", projects: projects, title: "Current Active Projects")
   end
 
   def pending_aproval(conn, _params) do
     projects = Projects.list_pending_aproval_projects()
-    render(conn, "index.html", projects: projects)
+    render(conn, "index.html", projects: projects, title: "Projects pending aproval")
   end
 
   def new(conn, _params) do
