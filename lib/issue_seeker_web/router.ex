@@ -37,6 +37,11 @@ defmodule IssueSeekerWeb.Router do
       get "/:id", ProjectController, :show
     end
 
+    scope "/issues" do
+      get "/projects/:project_id", IssueController, :index
+      get "/:id", IssueController, :show
+    end
+
     scope "/" do
       pipe_through :auth
 

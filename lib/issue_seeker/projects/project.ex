@@ -14,6 +14,7 @@ defmodule IssueSeeker.Projects.Project do
     field :owner, :string
     field :status, :string
     field :stargazers_count, :integer
+    field :last_issues_request, :naive_datetime
     belongs_to :level, Level, on_replace: :nilify
     many_to_many :contributors, Contributor, join_through: "projects_contributors", on_replace: :delete
     many_to_many :languages, Language, join_through: "projects_languages", on_replace: :delete
@@ -50,6 +51,13 @@ defmodule IssueSeeker.Projects.Project do
     |> Repo.preload([:level])
     |> cast(attrs, [:status])
     |> put_existing_assoc(:level, level)
+  end
+
+  def issue_request_changeset(%Project{} = project) do
+    project
+    |> cast(%{
+      "last_issues_request" => NaiveDateTime.utc_now()
+    }, [:last_issues_request])
   end
 
   def statuses, do: ["PENDING_APROVAL", "ACTIVE", "INACTIVE"]

@@ -6,7 +6,7 @@ defmodule IssueSeeker.Projects do
   import Ecto.Query, warn: false
 
   alias IssueSeeker.Repo
-  alias IssueSeeker.Projects.{Project, Contributor}
+  alias IssueSeeker.Projects.{Project, Contributor, Label, Issue}
   alias Ecto.Multi
 
   def filter_contributors_by_name(names) do
@@ -22,7 +22,7 @@ defmodule IssueSeeker.Projects do
       end)
 
     case create_contributors(nonexistent_contributors) do
-      {:ok, _created_languages} ->
+      {:ok, _created_contributors} ->
         {:ok, filter_contributors_by_name(names)}
       {:error, failed_operation, failed_value, _succeded_changes} ->
         {:error, failed_operation, failed_value}
@@ -36,6 +36,86 @@ defmodule IssueSeeker.Projects do
         {:contributor, name},
         Contributor.changeset(%{name: name})
       )
+    end)
+    |> Repo.transaction()
+  end
+
+  def filter_labels_by_name(names) do
+    query = from l in Label, where: l.name in ^names
+    Repo.all(query)
+  end
+
+  def ensure_labels_created(names) when is_list(names) do
+    nonexistent_labels =
+      Enum.reject(names, fn name ->
+        query = from l in Label, where: l.name == ^name
+        Repo.exists?(query)
+      end)
+
+    case create_labels(nonexistent_labels) do
+      {:ok, _created_labels} ->
+        {:ok, filter_labels_by_name(names)}
+      {:error, failed_operation, failed_value, _succeded_changes} ->
+        {:error, failed_operation, failed_value}
+    end
+  end
+  def ensure_labels_created(_), do: {:ok, nil}
+
+  def create_labels(names) when is_list(names) do
+    Enum.reduce(names, Multi.new(), fn name, multi ->
+      Multi.insert(
+        multi,
+        {:label, name},
+        Label.changeset(%{name: name})
+      )
+    end)
+    |> Repo.transaction()
+  end
+
+  def get_project_issues(%Project{id: id}) do
+    query = from i in Issue, join: p in assoc(i, :project), where: p.id == ^id
+    Repo.all(query)
+  end
+
+  def get_project_open_issues(%Project{id: id} = project) do
+    verify_issues_update(project)
+    query = from i in Issue, join: p in assoc(i, :project), where: p.id == ^id and i.is_open == true, preload: [:labels, :project]
+    Repo.all(query)
+  end
+  def get_project_open_issues(_), do: []
+
+  def get_issue_from_project_and_number(%Project{id: id}, number) do
+    query = from i in Issue, join: p in assoc(i, :project), where: p.id == ^id and i.number == ^number
+    Repo.one(query)
+  end
+
+  def set_issues_closed(issues) do
+    Enum.reduce(issues, Multi.new(), fn issue, multi ->
+      Multi.update(
+        multi,
+        {:issue, issue.id},
+        Issue.update_changeset(issue, %{is_open: false})
+      )
+    end)
+    |> Repo.transaction()
+  end
+
+  def create_or_update_issues(project, issues_params) do
+    Enum.reduce(issues_params, Multi.new(), fn %{"number" => number} = issue_params, multi ->
+      case get_issue_from_project_and_number(project, number) do
+        %Issue{} = issue ->
+          Multi.update(
+            multi,
+            {:issue, number},
+            Issue.update_changeset(issue, issue_params)
+          )
+        nil ->
+          Multi.insert(
+            multi,
+            {:issue, number},
+            Issue.create_changeset(%Issue{project: project}, issue_params)
+          )
+      end
     end)
     |> Repo.transaction()
   end
@@ -62,10 +142,46 @@ defmodule IssueSeeker.Projects do
     |> Repo.update()
   end
 
+  def verify_issues_update(project) do
+    case project.last_issues_request do
+      %NaiveDateTime{} = last_time ->
+        if(NaiveDateTime.diff(NaiveDateTime.utc_now, last_time) > 3600) do
+          update_project_issues_from_github(project)
+        end
+      nil ->
+        update_project_issues_from_github(project)
+    end
+  end
+
+  def update_last_issue_request(project) do
+    project
+    |> Project.issue_request_changeset()
+    |> Repo.update!()
+  end
+
+  def update_project_issues_from_github(project) do
+    current_issues = get_project_issues(project)
+    set_issues_closed(current_issues)
+
+    with {:ok, issues_params} <- IssueSeeker.Http.Issue.get(project),
+      {:ok, updated_issues} <- create_or_update_issues(project, issues_params) do
+        update_last_issue_request(project)
+        {:ok, updated_issues}
+      else
+        error -> error
+    end
+  end
+
   def get_project!(id) do
     Project
     |> Repo.get!(id)
     |> Repo.preload([:languages, :level])
+  end
+
+  def get_issue!(id) do
+    Issue
+    |> Repo.get!(id)
+    |> Repo.preload([:labels, :project])
   end
 
   def change_project(project, attrs \\ %{}) do

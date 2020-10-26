@@ -19,9 +19,10 @@
       <td><%= project.stargazers_count %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.project_path(@conn, :show, project) %></span>
+        <span class="btn"><%= link "Show", to: Routes.project_path(@conn, :show, project) %></span>
+        <span class="btn"><%= link "Issues", to: Routes.issue_path(@conn, :index, project) %></span>
         <%= if admin_session?(@conn) do %>
-          <span><%= link "Edit", to: Routes.project_path(@conn, :edit, project) %></span>
+          <span class="btn"><%= link "Edit", to: Routes.project_path(@conn, :edit, project) %></span>
         <% end %>
       </td>
     </tr>

@@ -1,0 +1,24 @@
+<h1> <%= @issues |> List.first |> Map.get(:project) |> Map.get(:name)%>'s Open Issues</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>GitHub Link</th>
+
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for issue <- @issues do %>
+    <tr>
+      <td><%= issue.title %></td>
+      <td><%= link "GitHub", to: issue.url, target: "_blank"%></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.issue_path(@conn, :show, issue) %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+

@@ -18,7 +18,8 @@
       <td><%= project.stargazers_count %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.project_path(@conn, :show, project) %></span>
+        <span class="btn"><%= link "Show", to: Routes.project_path(@conn, :show, project) %></span>
+        <span class="btn"><%= link "Issues", to: Routes.issue_path(@conn, :index, project) %></span>
       </td>
     </tr>
 <% end %>

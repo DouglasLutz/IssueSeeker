@@ -7,6 +7,7 @@
     <strong>Owner:</strong>
     <%= @project.owner %>
   </li>
+  <%= link "Issues", to: Routes.issue_path(@conn, :index, @project), class: "list-group-item list-group-item-action active"%>
 
   <li class="list-group-item">
     <strong>Stargazers count:</strong>
