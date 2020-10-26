@@ -21,6 +21,14 @@
               Recommendations
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <%= link to: Routes.recommendation_path(@conn, :index), class: "dropdown-item" do %>
+                <span><%= gettext("My recommendations") %></span>
+              <% end %>
+              
+              <%= link to: Routes.recommendation_path(@conn, :create), method: :post, class: "dropdown-item" do %>
+                <span><%= gettext("Generate new recommendation") %></span>
+              <% end %>
+
               <%= link to: Routes.recommendation_path(@conn, :projects), class: "dropdown-item" do %>
                 <span><%= gettext("Projects for me") %></span>
               <% end %>

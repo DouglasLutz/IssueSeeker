@@ -1,0 +1,41 @@
+<h1><%= @recommendation_issue.issue.title %></h1>
+
+<ul class="list-group">
+  <%= link "Go to GitHub issue page", to: @recommendation_issue.issue.url, target: "_blank", class: "list-group-item list-group-item-action active"%>
+
+  <li class="list-group-item">
+    <strong>Description:</strong>
+    <%= @recommendation_issue.issue.body %>
+  </li>
+
+  <li class="list-group-item">
+    <strong>Number of comments:</strong>
+    <%= @recommendation_issue.issue.number_of_comments %>
+  </li>
+
+  <li class="list-group-item">
+    <strong>Labels:</strong>
+    <ul class="list-group">
+      <%= for label <- @recommendation_issue.issue.labels do %>
+        <li class="list-group-item"><%= label.name %></li>
+      <% end %>
+    </ul>
+  </li>
+
+  <li class="list-group-item">
+    <strong>Author association:</strong>
+    <%= @recommendation_issue.issue.author_association %>
+  </li>
+
+  <%= if @recommendation_issue.issue.has_assignee do %>
+    <li class="list-group-item">
+      <strong>Already have assignee</strong>
+    </li>
+  <% else %>
+    <li class="list-group-item">
+      <strong>Don't have assignee</strong>
+    </li>
+  <% end %>
+</ul>
+
+<span><%= link "Back", to: Routes.recommendation_path(@conn, :show, @recommendation_issue.recommendation) %></span>

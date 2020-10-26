@@ -71,6 +71,10 @@ defmodule IssueSeekerWeb.Router do
 
       scope "/recommendations" do
         get "/projects", RecommendationController, :projects
+        get "/issue_details/:id", RecommendationController, :show_issue
+        get "/", RecommendationController, :index
+        get "/:id", RecommendationController, :show
+        post "/", RecommendationController, :create
       end
     end
   end

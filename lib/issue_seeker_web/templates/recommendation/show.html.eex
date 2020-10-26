@@ -1,0 +1,26 @@
+<h1> Recommendation Issues </h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Similarity value (%)</th>
+      <th>GitHub Link</th>
+
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for recommendation_issue <- @recommendations_issues do %>
+    <tr>
+      <td><%= recommendation_issue.issue.title %></td>
+      <td><%= recommendation_issue.value %></td>
+      <td><%= link "GitHub", to: recommendation_issue.issue.url, target: "_blank"%></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.recommendation_path(@conn, :show_issue, recommendation_issue) %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
