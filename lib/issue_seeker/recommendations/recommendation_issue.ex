@@ -6,6 +6,7 @@ defmodule IssueSeeker.Recommendations.RecommendationIssue do
   alias __MODULE__
   alias IssueSeeker.Recommendations.Recommendation
   alias IssueSeeker.Projects.Issue
+  alias IssueSeeker.Services.RecommendationIssueValue
 
   schema "recommendations_issues" do
     field :value, :integer
@@ -24,6 +25,11 @@ defmodule IssueSeeker.Recommendations.RecommendationIssue do
   end
 
   defp get_issue_potential_value(attrs) do
-    Map.merge(attrs, %{"value" => 0})
+    Map.merge(attrs, %{
+      "value" =>
+        attrs
+        |> Map.get("issue")
+        |> RecommendationIssueValue.perform()
+    })
   end
 end

@@ -54,7 +54,7 @@ defmodule IssueSeeker.Recommendations do
       from ri in RecommendationIssue,
       join: r in assoc(ri, :recommendation),
       where: r.id == ^id,
-      order_by: ri.value,
+      order_by: [desc: ri.value],
       preload: [issue: [:labels], recommendation: []]
 
     Repo.all(query)
