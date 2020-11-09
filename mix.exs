@@ -50,7 +50,8 @@ defmodule IssueSeeker.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth_github, "~> 0.7"},
-      {:httpoison, "~> 1.7"}
+      {:httpoison, "~> 1.7"},
+      {:timex, "~> 3.5"}
     ]
   end
 
