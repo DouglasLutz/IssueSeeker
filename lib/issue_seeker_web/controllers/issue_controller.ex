@@ -4,11 +4,9 @@ defmodule IssueSeekerWeb.IssueController do
   alias IssueSeeker.Projects
 
   def index(conn, %{"project_id" => project_id}) do
-    issues =
-      project_id
-      |> Projects.get_project!()
-      |> Projects.get_project_open_issues()
-    render(conn, "index.html", issues: issues)
+    project = Projects.get_project!(project_id)
+    issues = Projects.get_project_open_issues(project)
+    render(conn, "index.html", project: project, issues: issues)
   end
 
   def show(conn, %{"id" => id}) do
