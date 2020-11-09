@@ -32,7 +32,7 @@ defmodule IssueSeeker.Projects.Issue do
       |> Projects.ensure_labels_created()
 
     issue
-    |> cast(attrs, [:title, :number, :body, :author_association, :number_of_comments, :has_assignee, :is_open, :url])
+    |> cast(attrs, [:title, :number, :body, :author_association, :number_of_comments, :has_assignee, :is_open, :url, :inserted_at, :updated_at])
     |> put_existing_assoc(:labels, labels)
     |> put_existing_assoc(:project, Map.get(attrs, "project"))
     |> validate_required(:project)

@@ -33,8 +33,6 @@ defmodule IssueSeeker.Recommendations do
         end)
       end)
 
-    IO.puts(inspect issues)
-
     attrs = %{
       "recommendations_issues" => issues
     }

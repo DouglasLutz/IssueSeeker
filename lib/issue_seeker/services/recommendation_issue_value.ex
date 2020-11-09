@@ -3,11 +3,11 @@ defmodule IssueSeeker.Services.RecommendationIssueValue do
 
   @initial_value 100
   # Not evaluated yet
-  @labels_total_weight 0
+  @labels_total_weight 30
   @comments_total_weight 10
   @author_association_total_weight 20
   # Not evaluated yet
-  @creation_date_total_weight 0
+  @creation_date_total_weight 10
   @has_assignee_total_weight 30
 
   def perform(
@@ -15,14 +15,15 @@ defmodule IssueSeeker.Services.RecommendationIssueValue do
       author_association: author_association,
       labels: labels,
       number_of_comments: number_of_comments,
-      has_assignee: has_assignee
+      has_assignee: has_assignee,
+      inserted_at: inserted_at
     } = _issue
   ) do
     @initial_value -
     get_author_association_loss(author_association) -
     get_labels_loss(labels) -
     get_comments_loss(number_of_comments) -
-    get_creation_date_loss(nil) -
+    get_creation_date_loss(inserted_at) -
     get_has_assignee_loss(has_assignee)
     |> Kernel.ceil()
   end
@@ -48,8 +49,8 @@ defmodule IssueSeeker.Services.RecommendationIssueValue do
 
   def get_comments_loss(number_of_comments) do
     comments_loss_table = %{
-      0 => 0.4,
-      1 => 0.2,
+      0 => 0,
+      1 => 0,
       2 => 0,
       3 => 0,
       4 => 0,
@@ -66,8 +67,21 @@ defmodule IssueSeeker.Services.RecommendationIssueValue do
     end
   end
 
-  def get_creation_date_loss(_creation_date) do
-    @creation_date_total_weight
+  def get_creation_date_loss(creation_date) do
+    date_week_ago = NaiveDateTime.utc_now() |> Timex.shift(weeks: -1)
+    date_month_ago = NaiveDateTime.utc_now() |> Timex.shift(months: -1)
+
+    multiplier =
+      cond do
+        creation_date >= date_week_ago ->
+          0
+        creation_date >= date_month_ago ->
+          0.5
+        true ->
+          1
+      end
+
+    @creation_date_total_weight * multiplier
   end
 
   def get_has_assignee_loss(true), do: @has_assignee_total_weight

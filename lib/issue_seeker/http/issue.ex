@@ -37,7 +37,8 @@ defmodule IssueSeeker.Http.Issue do
         "number",
         "title",
         "body",
-        "author_association"
+        "author_association",
+        "updated_at"
       ])
       |> Map.merge(%{
         "is_open" => (Map.get(issue, "state") == "open"),
@@ -48,7 +49,8 @@ defmodule IssueSeeker.Http.Issue do
           |> Map.get("labels")
           |> Enum.map(&(Map.get(&1, "name")))
         ),
-        "url" => Map.get(issue, "html_url")
+        "url" => Map.get(issue, "html_url"),
+        "inserted_at" => Map.get(issue, "created_at"),
       })
 
     acc ++ [issue_params]
