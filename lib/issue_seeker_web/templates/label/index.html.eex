@@ -1,0 +1,30 @@
+<h1> Registered Labels </h1>
+  <%= if not Enum.empty?(@labels) do %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Classification</th>
+          <th>Issues with label</th>
+          <th>Update classification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for label <- @labels do %>
+          <tr>
+            <td><%= label.name %></td>
+            <td><%= label.classification %></td>
+            <td>
+              <span><%= link "Issues", to: Routes.label_path(@conn, :issues, label) %></span>
+            </td>
+            <td>
+              <span><%= link "Edit", to: Routes.label_path(@conn, :edit, label) %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <h4>Looks like there is no labels.</h3>
+  <% end %>
+

@@ -1,12 +1,10 @@
 defmodule IssueSeeker.Services.RecommendationIssueValue do
-  alias IssueSeeker.Projects.Issue
+  alias IssueSeeker.Projects.{Issue, Label}
 
   @initial_value 100
-  # Not evaluated yet
   @labels_total_weight 30
   @comments_total_weight 10
   @author_association_total_weight 20
-  # Not evaluated yet
   @creation_date_total_weight 10
   @has_assignee_total_weight 30
 
@@ -43,8 +41,29 @@ defmodule IssueSeeker.Services.RecommendationIssueValue do
     Map.get(author_association_loss_table, author_association) * @author_association_total_weight
   end
 
-  def get_labels_loss(_labels) do
-    @labels_total_weight
+  def get_labels_loss(labels) do
+    loss_multiplier = 0.3;
+
+    loss_multiplier =
+      Enum.reduce(labels, loss_multiplier, fn %Label{classification: classification}, acc ->
+        case classification do
+          "GOOD" ->
+            acc - 0.3
+          "BAD" ->
+            acc + 0.6
+          "NEUTRAL" ->
+            acc - 0.05
+          nil ->
+            acc
+        end
+      end)
+
+    loss_multiplier =
+      loss_multiplier
+      |> Kernel.max(0)
+      |> Kernel.min(1)
+
+    @labels_total_weight * loss_multiplier
   end
 
   def get_comments_loss(number_of_comments) do

@@ -1,0 +1,12 @@
+<h1>Edit Label: <%= @label.name %></h1>
+
+<%= form_for @changeset, Routes.label_path(@conn, :update, @label), fn f -> %>
+  <div class="form-group">
+    <label for="classification">Classification</label>
+    <%= select f, :classification, available_classifications(), selected: @changeset.data.classification, class: "form-control" %>
+  </div>
+
+  <%= submit "Submit", class: "form-control" %>
+<% end %>
+
+<span><%= link "Back", to: Routes.label_path(@conn, :index), class: "btn btn-secondary form-control" %></span>

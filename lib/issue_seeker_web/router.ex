@@ -64,6 +64,13 @@ defmodule IssueSeekerWeb.Router do
         get "/edit/:id", ProjectController, :edit
         put "/:id", ProjectController, :update
       end
+
+      scope "/labels" do
+        get "/", LabelController, :index
+        get "/:id/issues", LabelController, :issues
+        get "/edit/:id", LabelController, :edit
+        put "/:id", LabelController, :update
+      end
     end
 
     scope "/" do

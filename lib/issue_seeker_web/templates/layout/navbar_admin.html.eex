@@ -1,0 +1,15 @@
+
+  <div class="nav-item active dropdown  my-2 my-lg-0">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Admin
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+      <%= link to: Routes.project_path(@conn, :pending_aproval), class: "dropdown-item" do %>
+        <span><%= gettext("Pending projects") %></span>
+      <% end %>
+
+      <%= link to: Routes.label_path(@conn, :index), class: "dropdown-item" do %>
+        <span><%= gettext("Issue's Labels") %></span>
+      <% end %>
+    </div>
+  </div>

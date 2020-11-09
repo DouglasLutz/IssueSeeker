@@ -36,7 +36,14 @@
           </div>
 
         </ul>
-        <%= render "navbar_account.html", conn: @conn %>
+        <%= if signed_in?(@conn) do %>
+          <%= render "navbar_account.html", conn: @conn %>
+        <% else %>
+          <%= render "navbar_log_in.html", conn: @conn %>
+        <% end %>
+        <%= if admin_session?(@conn) do %>
+          <%= render "navbar_admin.html", conn: @conn %>
+        <% end %> 
       </div>
     </div>
   </nav>

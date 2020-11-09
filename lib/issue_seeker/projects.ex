@@ -66,7 +66,7 @@ defmodule IssueSeeker.Projects do
       Multi.insert(
         multi,
         {:label, name},
-        Label.changeset(%{name: name})
+        Label.create_changeset(%{name: name})
       )
     end)
     |> Repo.transaction()
@@ -204,5 +204,36 @@ defmodule IssueSeeker.Projects do
         error ->
           error
     end
+  end
+
+  def list_labels() do
+    Label
+    |> Repo.all()
+  end
+
+  def get_label!(id) do
+    Label
+    |> Repo.get!(id)
+  end
+
+  def change_label(label, attrs \\ %{}) do
+    Label.update_changeset(label, attrs)
+  end
+
+
+  def update_label(%Label{} = label, label_params) do
+    label
+    |> Label.update_changeset(label_params)
+    |> Repo.update()
+  end
+
+  def issues_with_label(%Label{} = label) do
+    query =
+      label
+      |> Ecto.assoc(:issues)
+
+    query = from i in query, where: i.is_open == true
+
+    Repo.all(query)
   end
 end

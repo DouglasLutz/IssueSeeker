@@ -1,0 +1,24 @@
+<h1> Issues with label "<%= Map.get(@label, :name) %>"</h1>
+<%= if not Enum.empty?(@issues) do %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>GitHub Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for issue <- @issues do %>
+        <tr>
+          <td><%= issue.title %></td>
+          <td><%= link "GitHub", to: issue.url, target: "_blank"%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h4>Looks like the project don't have any active issue.</h3>
+<% end %>
+
+<span><%= link "Back", to: Routes.label_path(@conn, :index), class: "btn btn-secondary form-control" %></span>
+
