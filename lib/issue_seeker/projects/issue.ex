@@ -19,7 +19,7 @@ defmodule IssueSeeker.Projects.Issue do
     field :url, :string
 
     belongs_to :project, Project, on_replace: :nilify
-    many_to_many :labels, Label, join_through: "issues_labels"
+    many_to_many :labels, Label, join_through: "issues_labels", on_replace: :delete
 
     timestamps()
   end
