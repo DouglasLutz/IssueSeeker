@@ -51,7 +51,8 @@ defmodule IssueSeeker.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth_github, "~> 0.7"},
       {:httpoison, "~> 1.7"},
-      {:timex, "~> 3.5"}
+      {:timex, "~> 3.5"},
+      {:mock, "~> 0.3.0", only: :test}
     ]
   end
 

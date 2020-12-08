@@ -36,5 +36,6 @@ defmodule IssueSeeker.Profiles.Profile do
     |> put_existing_assoc(:user, Map.get(attrs, "user"))
     |> put_existing_assoc(:level, level)
     |> put_assoc(:languages, languages)
+    |> validate_required([:user])
   end
 end

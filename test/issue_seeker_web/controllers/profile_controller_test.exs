@@ -1,19 +1,5 @@
-defmodule IssueSeekerWeb.ProjectControllerTest do
+defmodule IssueSeekerWeb.ProfileControllerTest do
   use IssueSeekerWeb.ConnCase
-
-  describe "index" do
-    test "lists all active projects", %{conn: _conn} do
-      # TODO
-      assert true
-    end
-  end
-
-  describe "pending_aproval" do
-    test "lists all pending aproval projects", %{conn: _conn} do
-      # TODO
-      assert true
-    end
-  end
 
   describe "new" do
     test "renders form", %{conn: _conn} do
@@ -35,7 +21,7 @@ defmodule IssueSeekerWeb.ProjectControllerTest do
   end
 
   describe "edit" do
-    test "renders form for editing chosen project", %{conn: _conn} do
+    test "renders form for editing", %{conn: _conn} do
       # TODO
       assert true
     end
@@ -54,7 +40,7 @@ defmodule IssueSeekerWeb.ProjectControllerTest do
   end
 
   describe "show" do
-    test "renders project details", %{conn: _conn} do
+    test "renders profile details", %{conn: _conn} do
       # TODO
       assert true
     end

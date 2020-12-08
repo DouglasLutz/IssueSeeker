@@ -121,12 +121,12 @@ defmodule IssueSeeker.Projects do
   end
 
   def list_active_projects() do
-    query = from p in Project, where: p.status == "ACTIVE", preload: [:languages, :level]
+    query = from p in Project, where: p.status == "ACTIVE", preload: [:languages, :level, :contributors]
     Repo.all(query)
   end
 
   def list_pending_aproval_projects() do
-    query = from p in Project, where: p.status == "PENDING_APROVAL", preload: [:languages, :level]
+    query = from p in Project, where: p.status == "PENDING_APROVAL", preload: [:languages, :contributors]
     Repo.all(query)
   end
 

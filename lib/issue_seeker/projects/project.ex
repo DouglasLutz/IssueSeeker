@@ -12,7 +12,7 @@ defmodule IssueSeeker.Projects.Project do
   schema "projects" do
     field :name, :string
     field :owner, :string
-    field :status, :string
+    field :status, :string, default: "PENDING_APROVAL"
     field :stargazers_count, :integer
     field :last_issues_request, :naive_datetime
     belongs_to :level, Level, on_replace: :nilify
