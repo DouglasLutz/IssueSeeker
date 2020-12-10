@@ -3,6 +3,8 @@
 // its own CSS file.
 import "../css/app.scss";
 import 'bootstrap';
+import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
+import '../node_modules/@fortawesome/fontawesome-free/js/all.js';
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
