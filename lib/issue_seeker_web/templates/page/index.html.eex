@@ -4,8 +4,7 @@
   <h2 class="text-center mt-5">Find issues to contribute on open source projects and improve your developer skills while helping.</h2>
 
   <p class="text-center h4 mt-5">Setup your profile with your level of knowledge and known languages and receive recommendations of open issues 
-  exclusively selected for your profile. Help the project how you can and everybody wins. Sign in and start helping in one of our 
-  <%= @number_of_active_projects %> open source projects.</p>
+  exclusively selected for your profile. Help the project and also improve your developer skills so everybody wins. Sign up now and start helping in one open source project.</p>
 
   <%= if signed_in?(@conn) do %>
     <%= if is_nil(current_user(@conn).profile) do %>

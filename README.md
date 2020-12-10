@@ -1,6 +1,10 @@
 # IssueSeeker
 
-## Dependencies
+## Production server
+
+The application is running [`here`](https://issue-seeker.herokuapp.com/)! 
+
+## Project Dependencies
 
 * PostgreSQL 8.4 or higher
 * Elixir 1.7 or higher
