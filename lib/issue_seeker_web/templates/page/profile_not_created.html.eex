@@ -1,5 +1,11 @@
-<p> Opsss, looks like your profile has not yet been created.</p>
+<hr>
+<div class="row justify-content-center mt-5 mb-5">
+  <p class="h4"> Looks like your profile has not yet been created. Create your profile and start receiving issues.</p>
 
-<%= link to: Routes.profile_path(@conn, :new), class: "btn btn-primary" do %>
-  <span><%= gettext("Create your profile!") %></span>
-<% end %>
+  <div class="row justify-content-center">
+    <%= link to: Routes.profile_path(@conn, :new), class: "btn btn-primary" do %>
+      <span><%= gettext("SETUP YOUR PROFILE!") %></span>
+    <% end %>
+  </div>
+</div>
+<hr>

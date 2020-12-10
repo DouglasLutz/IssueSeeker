@@ -29,6 +29,10 @@ defmodule IssueSeeker.Projects do
     end
   end
 
+  def count_active_projects() do
+    Repo.one(from p in Project, where: p.status == "ACTIVE", select: count(p.id))
+  end
+
   def create_contributors(names) when is_list(names) do
     Enum.reduce(names, Multi.new(), fn name, multi ->
       Multi.insert(
@@ -70,6 +74,17 @@ defmodule IssueSeeker.Projects do
       )
     end)
     |> Repo.transaction()
+  end
+
+  def get_last_open_issues() do
+    query =
+      from i in Issue,
+      where: i.is_open == true,
+      order_by: [desc: i.inserted_at],
+      limit: 10,
+      preload: [:project]
+
+    Repo.all(query)
   end
 
   def get_project_issues(%Project{id: id}) do

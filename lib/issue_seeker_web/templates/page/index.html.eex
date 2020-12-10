@@ -1,12 +1,55 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "IssueSeeker" %></h1>
+  <h1 class="text-center mt-5"><%= gettext "%{name}", name: "IssueSeeker" %></h1>
+  
+  <h2 class="text-center mt-5">Find issues to contribute on open source projects and improve your developer skills while helping.</h2>
+
+  <p class="text-center h4 mt-5">Setup your profile with your level of knowledge and known languages and receive recommendations of open issues 
+  exclusively selected for your profile. Help the project how you can and everybody wins. Sign in and start helping in one of our 
+  <%= @number_of_active_projects %> open source projects.</p>
+
   <%= if signed_in?(@conn) do %>
-    <%= if current_user(@conn).profile != nil do %>
-      <%= render "complete_content.html", conn: @conn %>
-    <% else %>
+    <%= if is_nil(current_user(@conn).profile) do %>
       <%= render "profile_not_created.html", conn: @conn %>
     <% end %>
   <% else %>
     <%= render "unsigned_content.html", conn: @conn %>
   <% end %>
+
+  <div class="container">
+    <h1 class="text-center">Latest open issues</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Title</th>
+
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for issue <- @issues do %>
+          <tr>
+            <td><%= link "#{issue.project.owner}/#{issue.project.name}", to: Routes.project_path(@conn, :show, issue.project) %></td>
+            <td><%= issue.title %></td>
+
+            <td>
+              <span><%= link "Show", to: Routes.issue_path(@conn, :show, issue) %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="text-center h4 mt-5">
+    Do you want to help on a project that is not already here?&emsp;
+  </p>
+  <div class="row justify-content-center">
+    <%= link "Send us an open source project!", to: Routes.project_path(@conn, :new), class: "h4"%>
+  </div>
+  <p class="text-center h4 mb-5">
+    <i class="fas fa-info-circle"></i> New projects are sent to a pending aproval phase in which our administrators can aprove 
+    or reject based on the project's information.
+  </p>
+  <hr>
 </section>

@@ -1,3 +1,12 @@
+<div class="nav-item active mr-3">
+  <%= link to: Routes.auth_path(@conn, :request), class: "navbar-link" do %>
+    <span><%= gettext("Sign up") %></span>
+    <span class="icon">
+      <i class="fab fa-github"></i>
+    </span>
+  <% end %>
+</div>
+
 <div class="nav-item active">
   <%= link to: Routes.auth_path(@conn, :request), class: "navbar-link" do %>
     <span><%= gettext("Sign in") %></span>

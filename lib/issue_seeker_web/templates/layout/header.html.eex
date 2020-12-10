@@ -8,32 +8,34 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active mr-3">
+          <li class="nav-item active ml-5">
             <%= link gettext("Home"), to: "/", class: "navbar-link" %>
           </li>
 
-          <li class="nav-item active mr-3">
+          <li class="nav-item active ml-5">
             <%= link gettext("Projects"), to: "/projects", class: "navbar-link" %>
           </li>
 
-          <div class="nav-item active dropdown mr-auto my-2 my-lg-0">
-            <a class="navbar-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Recommendations
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <%= link to: Routes.recommendation_path(@conn, :index), class: "dropdown-item" do %>
-                <span><%= gettext("My recommendations") %></span>
-              <% end %>
-              
-              <%= link to: Routes.recommendation_path(@conn, :create), method: :post, class: "dropdown-item" do %>
-                <span><%= gettext("Generate new recommendation") %></span>
-              <% end %>
+          <%= if signed_in?(@conn) && not is_nil(current_user(@conn).profile) do %>
+            <div class="nav-item active dropdown ml-5 my-2 my-lg-0">
+              <a class="navbar-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Recommendations
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <%= link to: Routes.recommendation_path(@conn, :index), class: "dropdown-item" do %>
+                  <span><%= gettext("My recommendations") %></span>
+                <% end %>
+                
+                <%= link to: Routes.recommendation_path(@conn, :create), method: :post, class: "dropdown-item" do %>
+                  <span><%= gettext("Generate new recommendation") %></span>
+                <% end %>
 
-              <%= link to: Routes.recommendation_path(@conn, :projects), class: "dropdown-item" do %>
-                <span><%= gettext("Projects for me") %></span>
-              <% end %>
+                <%= link to: Routes.recommendation_path(@conn, :projects), class: "dropdown-item" do %>
+                  <span><%= gettext("Projects for me") %></span>
+                <% end %>
+              </div>
             </div>
-          </div>
+          <% end %>
 
         </ul>
         <%= if signed_in?(@conn) do %>

@@ -1,8 +1,10 @@
-<p> Opsss, looks like you're not signed in.</p>
-
-<%= link to: Routes.auth_path(@conn, :request), class: "btn btn-primary" do %>
-  <span><%= gettext("Sign in") %></span>
-  <span class="icon">
-    <i class="fab fa-github"></i>
-  </span>
-<% end %>
+<hr>
+<div class="row justify-content-center mt-5 mb-5">
+  <%= link to: Routes.auth_path(@conn, :request), class: "btn btn-primary" do %>
+    <span><%= gettext("SIGN UP WITH GITHUB") %></span>
+    <span class="icon">
+      <i class="fab fa-github"></i>
+    </span>
+  <% end %>
+</div>
+<hr>
