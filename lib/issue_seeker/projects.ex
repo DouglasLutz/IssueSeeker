@@ -92,12 +92,12 @@ defmodule IssueSeeker.Projects do
     Repo.all(query)
   end
 
-  def get_project_open_issues(%Project{id: id} = project) do
-    verify_issues_update(project)
+  def get_project_open_issues(%Project{id: id} = project, token) do
+    verify_issues_update(project, token)
     query = from i in Issue, join: p in assoc(i, :project), where: p.id == ^id and i.is_open == true, preload: [:labels, :project]
     Repo.all(query)
   end
-  def get_project_open_issues(_), do: []
+  def get_project_open_issues(_, _), do: []
 
   def get_issue_from_project_and_number(%Project{id: id}, number) do
     query = from i in Issue, join: p in assoc(i, :project), where: p.id == ^id and i.number == ^number
@@ -157,14 +157,14 @@ defmodule IssueSeeker.Projects do
     |> Repo.update()
   end
 
-  def verify_issues_update(project) do
+  def verify_issues_update(project, token) do
     case project.last_issues_request do
       %NaiveDateTime{} = last_time ->
         if(NaiveDateTime.diff(NaiveDateTime.utc_now, last_time) > 3600) do
-          update_project_issues_from_github(project)
+          update_project_issues_from_github(project, token)
         end
       nil ->
-        update_project_issues_from_github(project)
+        update_project_issues_from_github(project, token)
     end
   end
 
@@ -174,11 +174,11 @@ defmodule IssueSeeker.Projects do
     |> Repo.update!()
   end
 
-  def update_project_issues_from_github(project) do
+  def update_project_issues_from_github(project, token) do
     current_issues = get_project_issues(project)
     set_issues_closed(current_issues)
 
-    with {:ok, issues_params} <- IssueSeeker.Http.Issue.get(project),
+    with {:ok, issues_params} <- IssueSeeker.Http.Issue.get(project, token),
       {:ok, updated_issues} <- create_or_update_issues(project, issues_params) do
         update_last_issue_request(project)
         {:ok, updated_issues}
@@ -203,15 +203,16 @@ defmodule IssueSeeker.Projects do
     Project.update_changeset(project, attrs)
   end
 
-  def get_project_attrs_from_url(url) do
-    with {:ok, %{"languages_url" => languages_url, "contributors_url" => contributors_url} = project_attrs} <- IssueSeeker.Http.Project.get(url),
-      {:ok, languages} <- IssueSeeker.Http.Language.get(languages_url),
-      {:ok, contributors} <- IssueSeeker.Http.Contributor.get(contributors_url) do
+  def get_project_attrs_from_url(url, token) do
+    with {:ok, %{"languages_url" => languages_url, "contributors_url" => _contributors_url} = project_attrs} <- IssueSeeker.Http.Project.get(url, token),
+      # Not used yet
+      # {:ok, contributors} <- IssueSeeker.Http.Contributor.get(contributors_url),
+      {:ok, languages} <- IssueSeeker.Http.Language.get(languages_url, token) do
         result =
           project_attrs
           |> Map.merge(%{
             "languages" => languages,
-            "contributors" => contributors
+            "contributors" => []
           })
 
         {:ok, result}

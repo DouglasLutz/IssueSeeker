@@ -226,18 +226,18 @@ defmodule IssueSeeker.ProjectsTest do
     end
   end
 
-  describe "get_project_attrs_from_url/1" do
+  describe "get_project_attrs_from_url/2" do
     test "returns the project attrs" do
       with_mocks(HttpMocks.get()) do
         assert {:ok, %{
-          "contributors" => ["user"],
+          "contributors" => [], # Does not take the contributors yet
           "contributors_url" => "https://api.github.com/repos/owner/name/contributors",
           "languages" => ["Elixir"],
           "languages_url" => "https://api.github.com/repos/owner/name/languages",
           "name" => "name",
           "owner" => "owner",
           "stargazers_count" => 42
-        }} = Projects.get_project_attrs_from_url("url")
+        }} = Projects.get_project_attrs_from_url("url", "token")
       end
     end
   end
@@ -257,7 +257,7 @@ defmodule IssueSeeker.ProjectsTest do
 
         assert {:ok, %{
           {:issue, 42} => %Issue{} = issue
-        }} = Projects.update_project_issues_from_github(project)
+        }} = Projects.update_project_issues_from_github(project, nil)
 
         assert issue.number == 42
         assert issue.title == "some title"

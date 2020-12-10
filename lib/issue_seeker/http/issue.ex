@@ -5,21 +5,25 @@ defmodule IssueSeeker.Http.Issue do
     "#{base_url()}/repos/#{owner}/#{name}/issues?state=open"
   end
 
+  defp headers(token) do
+    [Authorization: token]
+  end
+
   @doc """
     Todo:
       Still needs to work on getting next page issues,
       look for issues in response header with {"link", link}
   """
-  def get(owner, name) do
-    case url(owner, name) |> HTTPoison.get() do
+  def get(owner, name, token) do
+    case url(owner, name) |> HTTPoison.get(headers(token)) do
       {:ok, %HTTPoison.Response{} = response} ->
         {:ok, format_response(response)}
       {:error, error} ->
         {:error, error}
     end
   end
-  def get(project) do
-    get(project.owner, project.name)
+  def get(project, token) do
+    get(project.owner, project.name, token)
   end
 
   defp format_response(%HTTPoison.Response{body: body}) do

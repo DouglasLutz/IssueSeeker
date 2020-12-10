@@ -7,8 +7,12 @@ defmodule IssueSeeker.Http.Project do
     "#{base_url()}/repos/#{owner}/#{name}"
   end
 
-  def get(owner, name) do
-    case api_url(owner, name) |> HTTPoison.get() do
+  defp headers(token) do
+    [Authorization: token]
+  end
+
+  def get(owner, name, token) do
+    case api_url(owner, name) |> HTTPoison.get(headers(token)) do
       {:ok, %HTTPoison.Response{} = response} ->
         {:ok, format_response(response)}
       {:error, error} ->
@@ -16,10 +20,10 @@ defmodule IssueSeeker.Http.Project do
     end
   end
 
-  def get(project_url) do
+  def get(project_url, token) do
     case Regex.get_project_info_from_github_url(project_url) do
       %{"owner" => owner, "name" => name} ->
-        get(owner, name)
+        get(owner, name, token)
       _ ->
         {:error, :invalid_project_url}
     end

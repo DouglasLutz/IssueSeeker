@@ -5,7 +5,7 @@ defmodule HttpMocks do
         IssueSeeker.Http.Project,
         [],
         [
-          get: fn(_url) ->
+          get: fn(_url, _token) ->
             {:ok,
              %{
               "contributors_url" => "https://api.github.com/repos/owner/name/contributors",
@@ -21,7 +21,7 @@ defmodule HttpMocks do
         IssueSeeker.Http.Contributor,
         [],
         [
-          get: fn(_url) ->
+          get: fn(_url, _token) ->
             {:ok, ["user"]}
           end
         ]
@@ -30,7 +30,7 @@ defmodule HttpMocks do
         IssueSeeker.Http.Language,
         [],
         [
-          get: fn(_url) ->
+          get: fn(_url, _token) ->
             {:ok, ["Elixir"]}
           end
         ]
@@ -39,7 +39,7 @@ defmodule HttpMocks do
         IssueSeeker.Http.Issue,
         [],
         [
-          get: fn(_url) ->
+          get: fn(_url, _token) ->
             {:ok,
              [
               %{

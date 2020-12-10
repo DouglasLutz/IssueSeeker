@@ -23,4 +23,13 @@ defmodule IssueSeekerWeb.UserHelper do
     |> current_user()
     |> IssueSeeker.Profiles.get_user_profile()
   end
+
+  def current_user_token(conn) do
+    case current_user(conn) do
+      %IssueSeeker.Accounts.User{token: token} ->
+        token
+      _ ->
+        nil
+    end
+  end
 end

@@ -5,8 +5,12 @@ defmodule IssueSeeker.Http.Language do
     "#{base_url()}/repos/#{owner}/#{name}/languages"
   end
 
-  def get(owner, name) do
-    case url(owner, name) |> HTTPoison.get() do
+  defp headers(token) do
+    [Authorization: token]
+  end
+
+  def get(owner, name, token) do
+    case url(owner, name) |> HTTPoison.get(headers(token)) do
       {:ok, %HTTPoison.Response{} = response} ->
         {:ok, format_response(response)}
       {:error, error} ->
@@ -14,8 +18,8 @@ defmodule IssueSeeker.Http.Language do
     end
   end
 
-  def get(url) do
-    case HTTPoison.get(url) do
+  def get(url, token) do
+    case HTTPoison.get(url, headers(token)) do
       {:ok, %HTTPoison.Response{} = response} ->
         {:ok, format_response(response)}
       {:error, error} ->

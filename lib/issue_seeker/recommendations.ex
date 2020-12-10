@@ -21,13 +21,13 @@ defmodule IssueSeeker.Recommendations do
     Repo.all(query)
   end
 
-  def create_recommendation(%User{profile: profile} = user) do
+  def create_recommendation(%User{profile: profile, token: token} = user) do
     issues =
       profile
       |> filter_projects_for_profile()
       |> Enum.flat_map(fn project ->
         project
-        |> Projects.get_project_open_issues()
+        |> Projects.get_project_open_issues(token)
         |> Enum.map(fn issue ->
           %{"issue" => issue}
         end)

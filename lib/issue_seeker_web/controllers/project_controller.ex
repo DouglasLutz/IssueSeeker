@@ -18,7 +18,7 @@ defmodule IssueSeekerWeb.ProjectController do
   end
 
   def create(conn, %{"project" => %{"url" => url}}) do
-    with {:ok, project_params} <- Projects.get_project_attrs_from_url(url),
+    with {:ok, project_params} <- Projects.get_project_attrs_from_url(url, current_user_token(conn)),
       {:ok, _project} <- Projects.create_project(project_params) do
         conn
         |> put_flash(:info, "Project sugestion submitted successfully.")
